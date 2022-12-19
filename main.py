@@ -34,7 +34,7 @@ def readJson():
     except FileNotFoundError:
         print(" --- Run 'Update list' to make it work ---")
         raise
-
+    
 def writeJson(jsonText):
     with open("unplayed_games.json", "w+") as file:
         file.write(jsonText)
