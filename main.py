@@ -1,17 +1,42 @@
-from exclude import privateInfo
 import requests
 import random
 import json
 import os
 
-def readJson():
-    with open("unplayed_games.json", "r") as file:
+global Key, mySteamID
+
+try:
+    with open("data.json", "r") as file:
         jsonText = json.load(file)
+        Key = jsonText['Key']
+        mySteamID = jsonText['mySteamID']
     file.close()
-    return jsonText
+except FileNotFoundError:
+    jsonText = {
+    	"Key": " ",
+    	"mySteamID": " "
+    }
+    jsonTextIndent = json.dumps(jsonText, indent=4)
+
+    with open("data.json", "w+") as file:
+        file.write(jsonTextIndent)
+    file.close()
+
+    print(" --- Fill in required data in data.json ---")
+    raise
+
+def readJson():
+    try:
+        with open("unplayed_games.json", "r") as file:
+            jsonText = json.load(file)
+        file.close()
+        return jsonText
+    except FileNotFoundError:
+        print(" --- Run 'Update list' to make it work ---")
+        raise
 
 def writeJson(jsonText):
-    with open("unplayed_games.json", "w") as file:
+    with open("unplayed_games.json", "w+") as file:
         file.write(jsonText)
     file.close()
 
@@ -28,9 +53,7 @@ def pickRandomGame():
     print(random.choice(randGame))
 
 def updateList():
-    key = privateInfo.get_Key()
-    SteamID = privateInfo.get_SteamID()
-    URL = f"http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={key}&steamid={SteamID}&include_appinfo=1&format=json"
+    URL = f"http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={Key}&steamid={mySteamID}&include_appinfo=1&format=json"
     req = requests.get(url = URL)
     jsonText = req.json()
     for x in reversed(jsonText['response']['games']):

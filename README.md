@@ -9,8 +9,8 @@ You will need to get your own Steam API and Steam ID.
 
 Steam API can be aquired [here](https://steamcommunity.com/dev) and Steam ID can be found on your profile page in the URL.
 
-Remove the 1st line and add **key** and **SteamID** strings.
+## How to use
 
-## Note
+1) Edit the data.json file and put your **Key** and **mySteamID**.
 
-Run the update list function atleast ones for other functions to work.
+2) Run the **Update list** option atleast ones for other functions to work.
